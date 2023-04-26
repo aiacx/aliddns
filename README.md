@@ -23,7 +23,7 @@ run.bat
 ````
 #### 2.配置文件
 ##### 在config.xml启动后自动生成，需修改后再次启动
-##### 关于ip接口，可暂时访问http://lqt.cc:8445/api/ip/client
+##### 关于ip接口，可暂时访问http://pkpig.com:8443/api/ip/client
 ````
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
