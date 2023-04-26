@@ -89,9 +89,9 @@ public class IPUtil {
                 return null;
             }else if(ipv6Map.size()>1){
                 //netsh interface ipv6 set privacy state=disable
-                log.warn("监测到本机有多个ipv6地址，可能是开启了临时ipv6");
-                log.warn("ipv6: "+ ipv6Map);
-                log.warn("Windows 用户请输入: netsh interface ipv6 set privacy state=disable 重启后关闭临时ipv6");
+                log.warn("监测到本机有多个ipv6: "+ipv6Map+"，可能是开启了临时ipv6");
+                //log.warn("ipv6: "+ ipv6Map);
+                //og.warn("Windows 用户请输入: netsh interface ipv6 set privacy state=disable 重启后关闭临时ipv6");
                 return ipv6Map.get(0);
             }else {
                 return ipv6Map.get(0);

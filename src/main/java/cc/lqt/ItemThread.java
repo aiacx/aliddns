@@ -37,7 +37,7 @@ public class ItemThread implements Runnable{
                 }
                 Thread.sleep(item.getInterval()*1000);
             } catch (Exception e) {
-                log.warn("线程["+index+"]"+e.getMessage());
+                //log.warn("线程["+index+"]"+);
             }
         }
     }
