@@ -33,7 +33,7 @@ public class Main{
         log.info("GitHub：https://github.com/LiaoQingTing");
         log.info("共计["+config.items.size()+"]个解析项目");
         DDNSUtil.init(config.aliyun);
-        IPUtil.init(config.ipv4Api);
+        IPUtil.init(config.ipv4Api,true);
         for(int i=0;i<config.items.size();i++){
             Item item = config.items.get(i);
             Thread t = new Thread(new ItemThread(i,item));

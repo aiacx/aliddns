@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public class IPUtil {
 
     private static String ApiUrl4 = "http://lqt.cc:8443/api/ip/client";
+    private static boolean IsRestartNetwork = false;
     private static Pattern IPV4 = Pattern.compile("^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)$");
     private static Pattern IPV6 = Pattern.compile("^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
 
@@ -21,8 +22,9 @@ public class IPUtil {
         log.info("ipv6: " + getIpv6());
     }
 
-    public static void init(String apiUrl4) {
+    public static void init(String apiUrl4, boolean isRestartNetwork) {
         ApiUrl4 = apiUrl4;
+        IsRestartNetwork = isRestartNetwork;
     }
 
     public static String getIpv4() {
@@ -70,7 +72,7 @@ public class IPUtil {
             InetAddress ads = null;
             Enumeration<?> adds = NetworkInterface.getNetworkInterfaces();
             HashMap<Integer, String> ipv6Map = new HashMap<>();
-            int i=0;
+            int i = 0;
             while (adds.hasMoreElements()) {
                 NetworkInterface netInterface = (NetworkInterface) adds.nextElement();
                 Enumeration<?> inetAds = netInterface.getInetAddresses();
@@ -79,21 +81,37 @@ public class IPUtil {
                     if (ads instanceof InetAddress && !isReservedAddr(ads)) {//判断是否与InetAddress相同且非保留地址
                         String sb = ads.getHostAddress();//ip
                         if (sb.indexOf("240e") != -1) {
-                            ipv6Map.put(i++,sb.split("%")[0]);
+                            ipv6Map.put(i++, sb.split("%")[0]);
                         }
                     }
                 }
             }
-            if(ipv6Map.size() == 0){
+            if (ipv6Map.size() == 0) {
                 log.warn("本机无ipv6地址");
                 return null;
-            }else if(ipv6Map.size()>1){
+            } else if (ipv6Map.size() > 1) {
                 //netsh interface ipv6 set privacy state=disable
-                log.warn("监测到本机有多个ipv6: "+ipv6Map+"，可能是开启了临时ipv6");
-                //log.warn("ipv6: "+ ipv6Map);
-                //og.warn("Windows 用户请输入: netsh interface ipv6 set privacy state=disable 重启后关闭临时ipv6");
+                log.warn("监测到本机有多个ipv6: " + ipv6Map + "，可能是开启了临时ipv6");
+                if (IsRestartNetwork) {
+                    // 开启了重启网卡功能
+                    // 判断系统类型
+                    //System.out.println(System.getProperty("os.name")); //Mac OS X
+                    //System.out.println(System.getProperty("os.version")); //13.3
+                    //System.out.println(System.getProperty("os.arch")); //aarch64
+                    if (System.getProperty("os.name").contains("Windows")) {
+                        ExecUtil.runa("netsh interface ipv6 set privacy state=disable"); //关闭临时ipv6
+                        ExecUtil.runa("netsh interface set interface \"以太网\" disabled"); // 关闭以太网卡
+                        Thread.sleep(2000);
+                        ExecUtil.runa("netsh interface set interface \"以太网\" enabled"); // 启动以太网卡
+                        log.warn("重启以太网");
+                    }
+                    if (System.getProperty("os.name").contains("Linux")) {
+                        int r1 = ExecUtil.run("service network restart"); //重启网卡
+                        log.warn("重启网卡");
+                    }
+                }
                 return ipv6Map.get(0);
-            }else {
+            } else {
                 return ipv6Map.get(0);
             }
         } catch (Exception e) {

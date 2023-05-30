@@ -11,6 +11,8 @@ import java.util.List;
 public class Config {
     @JacksonXmlProperty(localName = "ipv4Api")
     public String ipv4Api;
+    @JacksonXmlProperty(localName = "isRestartNetwork")
+    public String isRestartNetwork;
     @JacksonXmlProperty(localName = "aliyun")
     public Aliyun aliyun;
     @JacksonXmlElementWrapper(localName = "items")
