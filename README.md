@@ -29,6 +29,8 @@ run.bat
 <config>
     <!--获取外网ipv4的接口，需要接口直接以文本形式返回客户端ip-->
     <ipv4Api>http://lqt.cc:8445/api/ip/client</ipv4Api>
+    <!--多ipv6地址时是否自动重启网卡刷新地址-->
+    <isRestartNetwork>true</isRestartNetwork>
     <aliyun>
         <!--阿里云节点地域-->
         <regionId>cn-chengdu</regionId>
