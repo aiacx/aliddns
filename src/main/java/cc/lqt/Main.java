@@ -28,7 +28,7 @@ public class Main{
             log.error("请在同目录config.xml配置参数，再运行本程序！");
             return;
         }
-        log.info("欢迎使用本工具");
+        log.info("欢迎使用本工具 Ver 1.0");
         log.info("官网：https://lqt.cc");
         log.info("GitHub：https://github.com/LiaoQingTing");
         log.info("共计["+config.items.size()+"]个解析项目");

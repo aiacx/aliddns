@@ -91,25 +91,25 @@ public class IPUtil {
                 return null;
             } else if (ipv6Map.size() > 1) {
                 //netsh interface ipv6 set privacy state=disable
-                log.warn("监测到本机有多个ipv6: " + ipv6Map + "，可能是开启了临时ipv6");
-                if (IsRestartNetwork) {
-                    // 开启了重启网卡功能
-                    // 判断系统类型
-                    //System.out.println(System.getProperty("os.name")); //Mac OS X
-                    //System.out.println(System.getProperty("os.version")); //13.3
-                    //System.out.println(System.getProperty("os.arch")); //aarch64
-                    if (System.getProperty("os.name").contains("Windows")) {
-                        ExecUtil.runa("netsh interface ipv6 set privacy state=disable"); //关闭临时ipv6
-                        ExecUtil.runa("netsh interface set interface \"以太网\" disabled"); // 关闭以太网卡
-                        Thread.sleep(2000);
-                        ExecUtil.runa("netsh interface set interface \"以太网\" enabled"); // 启动以太网卡
-                        log.warn("重启以太网");
-                    }
-                    if (System.getProperty("os.name").contains("Linux")) {
-                        int r1 = ExecUtil.run("service network restart"); //重启网卡
-                        log.warn("重启网卡");
-                    }
-                }
+//                log.warn("监测到本机有多个ipv6: " + ipv6Map + "，可能是开启了临时ipv6");
+//                if (IsRestartNetwork) {
+//                    // 开启了重启网卡功能
+//                    // 判断系统类型
+//                    //System.out.println(System.getProperty("os.name")); //Mac OS X
+//                    //System.out.println(System.getProperty("os.version")); //13.3
+//                    //System.out.println(System.getProperty("os.arch")); //aarch64
+//                    if (System.getProperty("os.name").contains("Windows")) {
+//                        ExecUtil.runa("netsh interface ipv6 set privacy state=disable"); //关闭临时ipv6
+//                        ExecUtil.runa("netsh interface set interface \"以太网\" disabled"); // 关闭以太网卡
+//                        Thread.sleep(2000);
+//                        ExecUtil.runa("netsh interface set interface \"以太网\" enabled"); // 启动以太网卡
+//                        log.warn("重启以太网");
+//                    }
+//                    if (System.getProperty("os.name").contains("Linux")) {
+//                        int r1 = ExecUtil.run("service network restart"); //重启网卡
+//                        log.warn("重启网卡");
+//                    }
+//                }
                 return ipv6Map.get(0);
             } else {
                 return ipv6Map.get(0);

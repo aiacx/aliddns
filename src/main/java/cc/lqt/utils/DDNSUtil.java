@@ -25,9 +25,11 @@ public class DDNSUtil {
             // 调用SDK发送请求
             return client.getAcsResponse(request);
         } catch (ClientException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            log.info(e.getMessage());
             // 发生调用错误，抛出运行时异常
-            throw new RuntimeException();
+            //throw new RuntimeException();
+            return null;
         }
     }
 
@@ -36,9 +38,11 @@ public class DDNSUtil {
             // 调用SDK发送请求
             return client.getAcsResponse(request);
         } catch (ClientException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // 发生调用错误，抛出运行时异常
-            throw new RuntimeException();
+            //throw new RuntimeException();
+            log.info(e.getMessage());
+            return null;
         }
     }
 
